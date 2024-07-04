@@ -18,6 +18,7 @@ def index():
 @app.route('/graph')
 def create_graph_sns():
     # 文字化け対策
+    # import japanize_matplotlib  # 使えない場合はコメントアウトして下記を有効に
     plt.rcParams['font.family'] = "Hiragino Sans"  # Macの場合
     # plt.rcParams['font.family'] = "MS Gothic"  # Windowsの場合
     # plt.rcParams['font.family'] = "IPAGothic"  # その他の場合
