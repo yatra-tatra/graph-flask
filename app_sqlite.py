@@ -21,15 +21,22 @@ def index():
 def create_graph_sqlite():
     # データベースを開く
     con = sqlite3.connect('data.db')
+    cur = con.cursor()
 
     # SQLでデータを読む
     sql = "SELECT date,temperature_sapporo,temperature_asahikawa FROM items ORDER BY id"
 
-    # pandasからSQLを実行してデータフレームを作成
-    df = pd.read_sql(sql=sql, con=con, index_col='date', parse_dates='date')
+    # SQL実行
+    rows = cur.execute(sql)
+    data = rows.fetchall()
 
     # データベースを閉じる
     con.close()
+
+    # SQL実行結果からデータフレームを作成
+    df = pd.DataFrame(data, columns=['日付','札幌','旭川'])
+    df['日付'] = pd.to_datetime(df['日付'])
+    df = df.set_index('日付')
 
     # pandasのplotメソッドによるグラフ作成
     df.plot(title="日平均気温比較", kind="line", rot=0, grid=True, alpha=0.5)
